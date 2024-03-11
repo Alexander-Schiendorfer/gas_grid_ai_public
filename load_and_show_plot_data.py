@@ -13,14 +13,18 @@ def combine_reward_trajectories(plot_data):
     reward_df = pd.concat( reward_dfs, ignore_index=True)
     return reward_df
 
-if __name__ == "__main__":
+def load_plot_data():
     plot_data_name = f"PPO_prepared_plot_data.pickle"
 
     plot_data_name = os.path.join(os.path.dirname(__file__), plot_data_name)
     with open(plot_data_name, 'rb') as file:
         compressed_pickle = file.read()
     depressed_pickle = blosc.decompress(compressed_pickle)
-    plot_data = pickle.loads(depressed_pickle)  
+    return pickle.loads(depressed_pickle)
+
+if __name__ == "__main__":
+  
+    plot_data = load_plot_data()
 
     # calculate interaction matrix using plot_data
     all_reward_trajectories = combine_reward_trajectories(plot_data)
